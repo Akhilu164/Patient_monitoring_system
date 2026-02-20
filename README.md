@@ -1,108 +1,153 @@
-# Patient Risk Monitoring System
+# 🏥 Patient Risk Monitoring System
 
-A structured healthcare web application for monitoring patient risk based on vitals, clinical history, and demographics. Built with Django and MySQL.
+> **A comprehensive healthcare web application for real-time patient risk assessment and monitoring.**
 
-## 🚀 Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Django 5.x](https://img.shields.io/badge/django-5.x-green.svg)](https://www.djangoproject.com/)
+[![MySQL](https://img.shields.io/badge/mysql-8.0+-orange.svg)](https://www.mysql.com/)
 
-- **Automated Risk Calculation**: Real-time scoring using specific clinical rules (Demographics, Vitals, Labs).
-- **Risk Classification**: Auto-assigns LOW, MEDIUM, or HIGH risk levels.
-- **Critical Escalation**: Immediate HIGH risk triggers for critical vital signs.
-- **Audit Logging**: Tracks every change to patient records with "Before & After" risk states.
-- **PDF Extraction**: Autofills patient forms by parsing uploaded medical PDF reports.
-- **Interactive Dashboard**: Visual analytics for risk distribution and recent admissions.
-- **Responsive UI**: Clean interface built with Bootstrap 5.
+---
 
-## 🛠 Technology Stack
+## 📖 About The Project
 
-- **Backend**: Django 5.x, Python 3.x
-- **Database**: MySQL
-- **Frontend**: HTML5, CSS3, Bootstrap 5, Chart.js
-- **PDF Processing**: PyPDF2
-- **Utilities**: Regex key-value extraction
+The **Patient Risk Monitoring System** is a robust, service-oriented web application designed to assist healthcare professionals in monitoring patient health status efficiently. By analyzing vitals, demographics, and clinical history, the system automatically calculates risk scores, assigns risk levels (LOW, MEDIUM, HIGH), and maintains a detailed audit trail of all changes.
+
+Key capabilities include automated PDF report parsing for quick data entry and a dynamic dashboard for visual analytics.
+
+## 🚀 Key Features
+
+*   **⚡ Automated Risk Engine**: Real-time risk calculation based on configurable clinical rules (Demographics, Vitals, Labs).
+*   **🎯 Intelligent Classification**: Auto-assigns risk levels:
+    *   🟢 **LOW**: Routine monitoring.
+    *   🟡 **MEDIUM**: Requires attention.
+    *   🔴 **HIGH**: Critical escalation needed.
+*   **🚨 Critical Alerts**: Immediate high-risk triggers for abnormal vital signs (e.g., severe hypertension).
+*   **📝 Automated Audit Logging**: Complete history tracking with "Before & After" snapshots for every patient record update.
+*   **📄 Smart PDF Extraction**: Drag-and-drop medical PDF reports to auto-fill patient forms using advanced text parsing.
+*   **📊 Interactive Dashboard**: Visual insights into risk distribution, recent admissions, and system usage.
+*   **📱 Responsive Design**: Fully responsive UI built with Bootstrap 5 for seamless access on any device.
+
+## 🛠️ Technology Stack
+
+| Component | Technology | Description |
+| :--- | :--- | :--- |
+| **Backend** | Django 5.x, Python 3.x | Core application logic and API handling. |
+| **Database** | MySQL | Robust relational database for patient records. |
+| **Frontend** | HTML5, CSS3, Bootstrap 5 | Responsive and accessible user interface. |
+| **Visualization** | Chart.js | Dynamic charts for the dashboard. |
+| **Processing** | PyPDF2, Regex | Text extraction and data parsing from PDF reports. |
 
 ## ⚙️ Architecture
 
-The project follows a Service-Oriented Architecture (SOA) within Django:
+The project adopts a **Service-Oriented Architecture (SOA)** within the Django framework to ensure scalability and maintainability:
 
-- `risk_monitor/services/risk_engine.py`: Pure logic module for calculating risk scores. Decoupled from models.
-- `risk_monitor/services/audit_service.py`: Handles business logic for updates, risk recalculation, and audit trail creation.
-- `risk_monitor/utils/pdf_parser.py`: Utility to parse unstructured text from PDFs.
-- `risk_monitor/views.py`: Thin view layer handling HTTP requests and delegating to services.
+*   **`risk_monitor/services/risk_engine.py`**: A pure logic module dedicated to calculating risk scores, completely decoupled from database models.
+*   **`risk_monitor/services/audit_service.py`**: Manages business logic for patient updates, risk recalculation, and audit trail generation.
+*   **`risk_monitor/utils/pdf_parser.py`**: A specialized utility for extracting structured data from unstructured medical PDF reports.
+*   **`risk_monitor/views.py`**: A thin view layer that strictly handles HTTP requests/responses and delegates complex logic to the services.
 
-## 📦 Setup & Installation
+## 📦 Getting Started
+
+Follow these steps to set up the project locally.
 
 ### Prerequisites
-- Python 3.9+
-- MySQL Server
 
-### 1. Clone & Environment
-```bash
-git clone <repo_url>
-cd patient-risk-monitoring-system
-python -m venv venv
-# Windows
-.\venv\Scripts\activate
-# Linux/Mac
-source venv/bin/activate
-```
+*   Python 3.9 or higher
+*   MySQL Server (optional, SQLite is default)
+*   Git
 
-### 2. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+### Installation
 
-### 3. Database Configuration
-The project is configured to use **SQLite** by default for immediate testing without setup.
+1.  **Clone the Repository**
+    ```bash
+    git clone https://github.com/Akhilu164/Patient_monitoring_system.git
+    cd Patient_monitoring_system
+    ```
 
-**To use MySQL (Optional):**
-1. Create a MySQL database (e.g., `patient_monitor`).
-2. Rename `.env.example` to `.env` (if applicable) and update credentials:
-   ```ini
-   DB_NAME=patient_monitor
-   DB_USER=root
-   DB_PASSWORD=your_password
-   DB_HOST=localhost
-   ```
-3. Uncomment the MySQL configuration in `config/settings.py` and comment out the SQLite section.
+2.  **Create Virtual Environment**
+    ```bash
+    # Windows
+    python -m venv venv
+    .\venv\Scripts\activate
 
-### 4. Run Migrations
+    # Linux/macOS
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
+
+3.  **Install Dependencies**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+### Configuration
+
+#### Database Setup
+By default, the project uses **SQLite**. To use **MySQL**:
+
+1.  Create a MySQL database (e.g., `patient_monitor`).
+2.  Create a `.env` file in the root directory and add your credentials:
+    ```ini
+    DB_NAME=patient_monitor
+    DB_USER=root
+    DB_PASSWORD=your_password
+    DB_HOST=localhost
+    ```
+3.  Update `config/settings.py` to use the MySQL configuration.
+
+#### Run Migrations
+Initialize the database schema:
+
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 5. Run Server
+### Running the Application
+
+Start the development server:
+
 ```bash
 python manage.py runserver
 ```
 
-## ✅ Feature Checklist
+Access the application at: `http://127.0.0.1:8000/`
 
-- [x] Risk Calculation Engine (Rules implemented exactly)
-- [x] Patient & AuditLog Models
-- [x] Automated Audit Logging
-- [x] PDF Vitals Extraction (Auto-fill)
-- [x] Dashboard with Charts
-- [x] CSV Export for Audit Logs
+## 🧪 Testing & Verification
 
-## 🧪 Testing
+Ensure the system logic is solid by running the included tests.
 
-Run the logic verification script:
+**Run Logic Verification Script:**
 ```bash
 python verify_logic.py
 ```
 
-Run Django tests:
+**Run Django Unit Tests:**
 ```bash
 python manage.py test risk_monitor
 ```
 
-## 📝 Assumptions & Limitations
-- **PDF Format**: Assumes a standard text-based PDF report format (not OCR).
-- **Authentication**: Usage assumes an internal network; login/auth system logic is standard Django admin (not customized for this scope).
-- **Risk Override**: As per requirements, risk level cannot be manually edited; it is always derived from data.
+## ✅ Feature Checklist
 
-## 🔮 Future Enhancements
-- [ ] HL7 / FHIR integration for real-time EMR data.
-- [ ] Email alerts for HIGH risk escalations.
-- [ ] User role management (Doctor vs Nurse views).
+- [x] Risk Calculation Engine
+- [x] Patient & AuditLog Database Models
+- [x] Automated Audit History
+- [x] PDF Data Extraction
+- [x] Analytics Dashboard
+- [x] CSV Export Functionality
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
