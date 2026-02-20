@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2>Audit Log</h2>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'risk_monitor:export_audit_csv' %}" class="btn btn-sm btn-outline-secondary">
+            Export CSV
+        </a>
+    </div>
+</div>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Timestamp</th>
+                        <th>Patient</th>
+                        <th>Field</th>
+                        <th>Change</th>
+                        <th>Risk Trace</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td class="ps-4 text-nowrap">
+                            <small>{{ log.timestamp|date:"d/m/Y" }}</small><br>
+                            <small class="text-muted">{{ log.timestamp|date:"H:i:s" }}</small>
+                        </td>
+                        <td><span class="fw-bold">{{ log.patient.full_name }}</span></td>
+                        <td><span class="badge bg-secondary bg-opacity-10 text-secondary">{{ log.field_name }}</span>
+                        </td>
+                        <td>
+                            <div class="small">
+                                <span class="text-danger"><del>{{ log.old_value|default:"-" }}</del></span>
+                                <i class="fa-solid fa-arrow-right mx-1 text-muted"></i>
+                                <span class="text-success fw-bold">{{ log.new_value|default:"-" }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="badge risk-badge-{{ log.risk_before }}">{{ log.risk_before }}</span>
+                                <i class="fa-solid fa-arrow-right-long text-muted mx-2 small"></i>
+                                <span class="badge risk-badge-{{ log.risk_after }}">{{ log.risk_after }}</span>
+                            </div>
+                            <small class="text-muted italic d-block" style="max-width: 300px;">
+                                {{ log.reason|default:"No trace data" }}
+                            </small>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5">No audit logs found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

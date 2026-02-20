@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h3 mb-0">{% if patient %}Edit Patient{% else %}Add New Patient{% endif %}</h2>
+            <a href="{% url 'risk_monitor:patient_list' %}" class="btn btn-outline-secondary">
+                <i class="fa-solid fa-arrow-left me-2"></i>Back to List
+            </a>
+        </div>
+
+        {% if autofilled %}
+        <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+            <i class="fa-solid fa-magic me-3 fa-lg"></i>
+            <div>
+                <strong>Autofill Successful!</strong> Form populated from PDF. Please review values before saving.
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger shadow-sm mb-4">
+                        <h6 class="alert-heading fw-bold"><i class="fa-solid fa-circle-exclamation me-2"></i>Please fix
+                            the following:</h6>
+                        <ul class="mb-0 small">
+                            {% for field in form %}
+                            {% for error in field.errors %}
+                            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                            {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    <!-- PDF Upload Section -->
+                    <div class="bg-light p-3 rounded mb-4 border">
+                        <div class="row align-items-end">
+                            <div class="col-md-9">
+                                <label for="id_pdf_file" class="form-label fw-bold">
+                                    <i class="fa-solid fa-file-pdf me-2 text-danger"></i>Upload Medical Record (PDF)
+                                </label>
+                                {{ form.pdf_file }}
+                                <div class="form-text">Upload a medical report to auto-fill vitals.</div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" name="autofill" class="btn btn-dark w-100">
+                                    <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Autofill
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Info -->
+                    <h5 class="mb-3 text-primary border-bottom pb-2">Personal Information</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Full Name</label>
+                            {{ form.full_name }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Age</label>
+                            {{ form.age }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Gender</label>
+                            {{ form.gender }}
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Contact Details</label>
+                            {{ form.contact_details }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Admission Date</label>
+                            {{ form.admission_date }}
+                        </div>
+                    </div>
+
+                    <!-- Vitals -->
+                    <h5 class="mb-3 text-primary border-bottom pb-2">Vital Signs</h5>
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label"><i class="fa-solid fa-heart-pulse text-danger me-2"></i>Heart Rate
+                                (BPM)</label>
+                            {{ form.heart_rate }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label"><i class="fa-solid fa-stethoscope text-primary me-2"></i>Systolic
+                                BP (mmHg)</label>
+                            {{ form.systolic_bp }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label"><i class="fa-solid fa-lungs text-info me-2"></i>SpO2 (%)</label>
+                            {{ form.spo2 }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label"><i
+                                    class="fa-solid fa-temperature-high text-warning me-2"></i>Temperature (°C)</label>
+                            {{ form.temperature }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label"><i
+                                    class="fa-solid fa-lungs-virus text-secondary me-2"></i>Respiratory Rate</label>
+                            {{ form.respiratory_rate }}
+                        </div>
+                    </div>
+
+                    <!-- Clinical History & Labs -->
+                    <h5 class="mb-3 text-primary border-bottom pb-2">Clinical History & Labs</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">ER Visits (Last 30 days)</label>
+                            {{ form.er_visits }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label d-block">Lab Indicators</label>
+                            <div class="form-check form-check-inline">
+                                {{ form.wbc_flag }}
+                                <label class="form-check-label" for="{{ form.wbc_flag.id_for_label }}">Elevated
+                                    WBC</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                {{ form.creatinine_flag }}
+                                <label class="form-check-label"
+                                    for="{{ form.creatinine_flag.id_for_label }}">Creatinine</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                {{ form.crp_flag }}
+                                <label class="form-check-label" for="{{ form.crp_flag.id_for_label }}">CRP</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Chronic Conditions</label>
+                        {{ form.chronic_conditions }}
+                        <div class="form-text">e.g. "Diabetes, Hypertension, Asthma"</div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-primary px-5">
+                            <i class="fa-solid fa-save me-2"></i>Save Patient Record
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if audit_logs %}
+        <div class="card shadow-sm mt-5 border-0">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fa-solid fa-history me-2 text-muted"></i>Patient Activity</h5>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#historyModal">
+                    <i class="fa-solid fa-clock-rotate-left me-1"></i> View Full Timeline
+                </button>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small mb-0">The record has {{ audit_logs|length }} update event{{
+                    audit_logs|length|pluralize }}. Click the button above to view the detailed history and risk traces.
+                </p>
+            </div>
+        </div>
+
+        <!-- History Modal -->
+        <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header bg-light border-bottom-0 py-3">
+                        <h5 class="modal-title fw-bold" id="historyModalLabel">
+                            <i class="fa-solid fa-timeline me-2 text-primary"></i>Patient History Timeline
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4 bg-white">
+                        <div class="timeline">
+                            {% for group in audit_logs %}
+                            <div class="timeline-item pb-4 mb-4 border-start ps-4 position-relative">
+                                <!-- Timeline Icon -->
+                                <div class="timeline-marker position-absolute rounded-circle bg-primary"
+                                    style="width: 14px; height: 14px; left: -7.5px; top: 0; border: 3px solid #fff;">
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <h6 class="fw-bold mb-0">Update Event</h6>
+                                        <small class="text-muted">{{ group.timestamp|date:"d/m/Y H:i" }}</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="d-flex align-items-center mb-1">
+                                            <span class="badge risk-badge-{{ group.risk_before }}">{{ group.risk_before
+                                                }} ({{ group.score_before }})</span>
+                                            <i class="fa-solid fa-arrow-right mx-2 text-muted small"></i>
+                                            <span class="badge risk-badge-{{ group.risk_after }}">{{ group.risk_after }}
+                                                ({{ group.score_after }})</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-light p-3 rounded-3 mb-3 border-0">
+                                    <div class="small fw-bold text-dark mb-2"><i
+                                            class="fa-solid fa-magnifying-glass-chart me-2"></i>Analysis Result:</div>
+                                    <div class="small text-muted italic">{{ group.reason|default:"No significant risk
+                                        factor changes" }}</div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-borderless align-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="small text-muted fw-bold text-uppercase" style="width: 30%;">
+                                                    Parameter</th>
+                                                <th class="small text-muted fw-bold text-uppercase">Previous</th>
+                                                <th class="small text-muted fw-bold text-uppercase">Current</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for change in group.changes %}
+                                            <tr class="border-top-0">
+                                                <td class="small fw-bold">{{ change.field_name }}</td>
+                                                <td class="small text-danger text-decoration-line-through opacity-75">{{
+                                                    change.old_value|default:"-" }}</td>
+                                                <td class="small text-success fw-bold">{{ change.new_value|default:"-"
+                                                    }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-0 py-3 bg-light">
+                        <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
