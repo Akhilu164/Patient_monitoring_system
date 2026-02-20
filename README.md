@@ -1,4 +1,4 @@
-# 🏥 Patient Risk Monitoring System
+# Patient Risk Monitoring System
 
 > **A comprehensive healthcare web application for real-time patient risk assessment and monitoring.**
 
@@ -9,26 +9,26 @@
 
 ---
 
-## 📖 About The Project
+## About The Project
 
 The **Patient Risk Monitoring System** is a robust, service-oriented web application designed to assist healthcare professionals in monitoring patient health status efficiently. By analyzing vitals, demographics, and clinical history, the system automatically calculates risk scores, assigns risk levels (LOW, MEDIUM, HIGH), and maintains a detailed audit trail of all changes.
 
 Key capabilities include automated PDF report parsing for quick data entry and a dynamic dashboard for visual analytics.
 
-## 🚀 Key Features
+## Key Features
 
-*   **⚡ Automated Risk Engine**: Real-time risk calculation based on configurable clinical rules (Demographics, Vitals, Labs).
-*   **🎯 Intelligent Classification**: Auto-assigns risk levels:
-    *   🟢 **LOW**: Routine monitoring.
-    *   🟡 **MEDIUM**: Requires attention.
-    *   🔴 **HIGH**: Critical escalation needed.
-*   **🚨 Critical Alerts**: Immediate high-risk triggers for abnormal vital signs (e.g., severe hypertension).
-*   **📝 Automated Audit Logging**: Complete history tracking with "Before & After" snapshots for every patient record update.
-*   **📄 Smart PDF Extraction**: Drag-and-drop medical PDF reports to auto-fill patient forms using advanced text parsing.
-*   **📊 Interactive Dashboard**: Visual insights into risk distribution, recent admissions, and system usage.
-*   **📱 Responsive Design**: Fully responsive UI built with Bootstrap 5 for seamless access on any device.
+*   **Automated Risk Engine**: Real-time risk calculation based on configurable clinical rules (Demographics, Vitals, Labs).
+*   **Intelligent Classification**: Auto-assigns risk levels:
+    *   **LOW**: Routine monitoring.
+    *   **MEDIUM**: Requires attention.
+    *   **HIGH**: Critical escalation needed.
+*   **Critical Alerts**: Immediate high-risk triggers for abnormal vital signs (e.g., severe hypertension).
+*   **Automated Audit Logging**: Complete history tracking with "Before & After" snapshots for every patient record update.
+*   **Smart PDF Extraction**: Drag-and-drop medical PDF reports to auto-fill patient forms using advanced text parsing.
+*   **Interactive Dashboard**: Visual insights into risk distribution, recent admissions, and system usage.
+*   **Responsive Design**: Fully responsive UI built with Bootstrap 5 for seamless access on any device.
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 | Component | Technology | Description |
 | :--- | :--- | :--- |
@@ -38,7 +38,7 @@ Key capabilities include automated PDF report parsing for quick data entry and a
 | **Visualization** | Chart.js | Dynamic charts for the dashboard. |
 | **Processing** | PyPDF2, Regex | Text extraction and data parsing from PDF reports. |
 
-## ⚙️ Architecture
+## Architecture
 
 The project adopts a **Service-Oriented Architecture (SOA)** within the Django framework to ensure scalability and maintainability:
 
@@ -47,7 +47,7 @@ The project adopts a **Service-Oriented Architecture (SOA)** within the Django f
 *   **`risk_monitor/utils/pdf_parser.py`**: A specialized utility for extracting structured data from unstructured medical PDF reports.
 *   **`risk_monitor/views.py`**: A thin view layer that strictly handles HTTP requests/responses and delegates complex logic to the services.
 
-## 📦 Getting Started
+## Getting Started
 
 Follow these steps to set up the project locally.
 
@@ -114,7 +114,7 @@ python manage.py runserver
 
 Access the application at: `http://127.0.0.1:8000/`
 
-## 🧪 Testing & Verification
+## Testing & Verification
 
 Ensure the system logic is solid by running the included tests.
 
@@ -128,7 +128,7 @@ python verify_logic.py
 python manage.py test risk_monitor
 ```
 
-## ✅ Feature Checklist
+## Feature Checklist
 
 - [x] Risk Calculation Engine
 - [x] Patient & AuditLog Database Models
@@ -137,7 +137,7 @@ python manage.py test risk_monitor
 - [x] Analytics Dashboard
 - [x] CSV Export Functionality
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -147,7 +147,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4.  Push to the Branch (`git push origin feature/AmazingFeature`)
 5.  Open a Pull Request
 
-## 📄 License
+## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
